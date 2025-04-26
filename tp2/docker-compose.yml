@@ -1,0 +1,60 @@
+version: '3.8'
+services:
+  discovery-service:
+    build: ./discovery-service
+    ports:
+      - "8761:8761"
+    networks:
+      - bank-network
+
+  config-service:
+    build: ./config-service
+    ports:
+      - "8888:8888"
+    depends_on:
+      - discovery-service
+    networks:
+      - bank-network
+
+  gateway-service:
+    build: ./gateway-service
+    ports:
+      - "8080:8080"
+    depends_on:
+      - discovery-service
+      - config-service
+    networks:
+      - bank-network
+
+  beneficiaire-service:
+    build: ./beneficiaire-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      - discovery-service
+      - config-service
+    networks:
+      - bank-network
+
+  virement-service:
+    build: ./virement-service
+    ports:
+      - "8082:8082"
+    depends_on:
+      - discovery-service
+      - config-service
+    networks:
+      - bank-network
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - gateway-service
+    networks:
+      - bank-network
+
+networks:
+  bank-network:
+    driver: bridge 

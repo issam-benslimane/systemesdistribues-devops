@@ -1,0 +1,17 @@
+type Compte {
+    id: ID
+    solde: Float
+    type: String
+    dateCreation: String
+}
+
+type Query {
+    compteList: [Compte]
+    compteById(id: ID): Compte
+}
+
+type Mutation {
+    addCompte(solde: Float, type: String, dateCreation: String): Compte
+    updateCompte(id: ID, solde: Float, type: String): Compte
+    deleteCompte(id: ID): Boolean
+} 
